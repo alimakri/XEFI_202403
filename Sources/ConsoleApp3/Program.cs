@@ -11,12 +11,29 @@ namespace TP1
     // A l'exécution, il faut que le message "La porte de la maison M1 est ouverte" s'affiche.
     internal class Program
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
-            Maison m1 = new Maison();
-            m1.Nom = "M1";
-            m1.Porte.Ouvrir(m1.Nom);
+            Maison m1 = new Maison { Nom = "Emeraude" };
+            var m2 = new Maison { Nom = "Rubis" };
 
+            List<Maison> liste = new List<Maison>();
+            liste.Add(m1);
+            liste.Add(m2);
+            liste.Add(new Maison { Nom = "Saphir" });
+
+            m1 = null;
+
+            foreach (Maison m in liste)
+            {
+                m.Porte.Ouvrir(m.Nom);
+            }
+            for(int i= 0; i < liste.Count; i++)
+            {
+               Console.WriteLine( liste[i].Nom);
+            }
+
+            //Console.WriteLine(m1.Nom);
+            Console.WriteLine(liste[0].Nom);
             Console.Read();
         }
     }
