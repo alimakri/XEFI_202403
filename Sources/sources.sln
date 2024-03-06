@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApx_14_Structure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApx_15_Algo", "ConsoleApx_15_Algo\ConsoleApx_15_Algo.csproj", "{6EEBB25C-0AAB-4200-89EA-37372F4D96FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApx_15_TP3", "ConsoleApx_15_TP3\ConsoleApx_15_TP3.csproj", "{F31DB27B-0075-4B71-B5BA-8DB53B789528}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApx_16_BDD", "ConsoleApx_16_BDD\ConsoleApx_16_BDD.csproj", "{8ACFB84D-9C00-47F6-A239-774AB61F9E57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,14 @@ Global
 		{6EEBB25C-0AAB-4200-89EA-37372F4D96FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EEBB25C-0AAB-4200-89EA-37372F4D96FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EEBB25C-0AAB-4200-89EA-37372F4D96FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F31DB27B-0075-4B71-B5BA-8DB53B789528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F31DB27B-0075-4B71-B5BA-8DB53B789528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F31DB27B-0075-4B71-B5BA-8DB53B789528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F31DB27B-0075-4B71-B5BA-8DB53B789528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ACFB84D-9C00-47F6-A239-774AB61F9E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ACFB84D-9C00-47F6-A239-774AB61F9E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ACFB84D-9C00-47F6-A239-774AB61F9E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ACFB84D-9C00-47F6-A239-774AB61F9E57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
