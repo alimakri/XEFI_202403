@@ -1,0 +1,14 @@
+﻿@model Voiture
+<html>
+<head>
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div><h1>Présentation d'une voiture</h1></div>
+    <h2 class="modele">@Model.Modele</h2>
+    <h2>@Model.Marque</h2>
+
+    <h5>@ViewBag.Personne</h5>
+    <img src="/images/prius.png" width="250" />
+</body>
+</html>

@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp2\ConsoleApp2.csproj">
+    <ProjectReference Include="..\ConsoleApp2\ConsoleApp2_Polymorphisme.csproj">
       <Project>{ace4b327-d166-428b-b172-94290df493af}</Project>
-      <Name>ConsoleApp2</Name>
+      <Name>ConsoleApp2_Polymorphisme</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
