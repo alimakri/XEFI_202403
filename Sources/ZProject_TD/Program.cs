@@ -10,39 +10,55 @@ using System.IO;
 
 namespace ZProject_TD
 {
+    // Clear-Host
     // Executer-Fichier -Nom d:\script.txt
     enum VerbeEnum
     {
         None, Get, Set, Add, Delete,
-        Executer
+        Executer,
+        Clear,
+        Exit
     }
-    enum NomEnum { None, Product, Categorie, Commande, Fichier }
+    enum NomEnum { None, Product, Categorie, Commande, Fichier,
+        Host
+    }
     internal class Program
     {
         static void Main(string[] args)
         {
-            var saisie = Console.ReadLine();
-            VerbeEnum verbe = VerbeEnum.None;
-            NomEnum nom = NomEnum.None; string paramName = null; string paramValue = null;
-            List<object> liste = null;
-            if (!Extraire(saisie, ref verbe, ref nom, ref paramName, ref paramValue))
+            string saisie = "";
+            while (saisie != "Exit-Host")
             {
-                Console.WriteLine("Instruction non valide");
-            }
-            else
-            {
-                if (verbe == VerbeEnum.Executer)
+                Console.Write("command> ");
+                saisie = Console.ReadLine();
+                VerbeEnum verbe = VerbeEnum.None;
+                NomEnum nom = NomEnum.None; string paramName = null; string paramValue = null;
+                List<object> liste = null;
+                if (!Extraire(saisie, ref verbe, ref nom, ref paramName, ref paramValue))
                 {
-                    liste = Executer(verbe, nom, paramName, paramValue);
-                    if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                    Console.WriteLine("Instruction non valide");
                 }
                 else
                 {
-                    liste = Requeter(verbe, nom, paramName, paramValue);
-                    if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                    if (verbe == VerbeEnum.Exit && nom == NomEnum.Host)
+                    {
+                    }
+                    else if (verbe == VerbeEnum.Clear && nom == NomEnum.Host)
+                    {
+                        Console.Clear();
+                    }
+                    else if (verbe == VerbeEnum.Executer)
+                    {
+                        liste = Executer(verbe, nom, paramName, paramValue);
+                        if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                    }
+                    else
+                    {
+                        liste = Requeter(verbe, nom, paramName, paramValue);
+                        if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                    }
                 }
             }
-            Console.ReadLine();
         }
 
         private static void Afficher(List<object> liste)
