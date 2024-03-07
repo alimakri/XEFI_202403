@@ -6,11 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ZProject_TD
 {
-    enum VerbeEnum { None, Get, Set, Add, Delete }
-    enum NomEnum { None, Product, Categorie, Commande }
+    // Executer-Fichier -Nom d:\script.txt
+    enum VerbeEnum
+    {
+        None, Get, Set, Add, Delete,
+        Executer
+    }
+    enum NomEnum { None, Product, Categorie, Commande, Fichier }
     internal class Program
     {
         static void Main(string[] args)
@@ -25,9 +31,17 @@ namespace ZProject_TD
             }
             else
             {
-                liste = Requeter(verbe, nom, paramName, paramValue);
+                if (verbe == VerbeEnum.Executer)
+                {
+                    liste = Executer(verbe, nom, paramName, paramValue);
+                    if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                }
+                else
+                {
+                    liste = Requeter(verbe, nom, paramName, paramValue);
+                    if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
+                }
             }
-            if (liste != null) Afficher(liste); else Console.WriteLine("Erreur !");
             Console.ReadLine();
         }
 
@@ -37,8 +51,32 @@ namespace ZProject_TD
             {
                 Console.WriteLine(p);
             }
+            Console.WriteLine();
         }
 
+        private static List<object> Executer(VerbeEnum verbe, NomEnum nom, string paramName, string paramValue)
+        {
+            if (!File.Exists(paramValue)) return null;
+
+            var lignes = File.ReadAllLines(paramValue); List<object> list = new List<object>();
+            ConsoleColor couleur = ConsoleColor.Cyan;
+            foreach (var ligne in lignes)
+            {
+                if (Extraire(ligne, ref verbe, ref nom, ref paramName, ref paramValue))
+                {
+                    var data = Requeter(verbe, nom, paramName, paramValue);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(ligne);
+
+                    Console.ForegroundColor = couleur;
+                    Afficher(data);
+
+                    if (couleur == ConsoleColor.Cyan) couleur = ConsoleColor.Magenta; else couleur = ConsoleColor.Cyan;
+                }
+            }
+            return list;
+        }
         private static List<object> Requeter(VerbeEnum verbe, NomEnum nom, string paramName, string paramValue)
         {
             string requete = null;
@@ -141,7 +179,7 @@ namespace ZProject_TD
             {
                 liste.Add(new Commande
                 {
-                    Annee = (int) rd["Annee"],
+                    Annee = (int)rd["Annee"],
                     Total = (decimal)rd["Total"]
                 });
             }
@@ -270,7 +308,7 @@ namespace ZProject_TD
             ref string paramName,
             ref string paramValue)
         {
-            Regex regex = new Regex("(\\w+)-(\\w+) *-?(\\w+)? *(\\w+)?");
+            Regex regex = new Regex("(\\w+)-(\\w+) *-?(\\w+)? *([\\w:\\\\.]+)?");
 
             // Trouver les correspondances dans le texte d'entrée
             MatchCollection matches = regex.Matches(saisie);
