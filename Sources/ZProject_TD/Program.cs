@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ZProject_TD
 {
     enum VerbeEnum { None, Get, Set, Add, Delete }
-    enum NomEnum { None, Product }
+    enum NomEnum { None, Product, Categorie }
     internal class Program
     {
         static void Main(string[] args)
