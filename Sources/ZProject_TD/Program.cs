@@ -39,7 +39,7 @@ namespace ZProject_TD
                     Console.WriteLine("Instruction non valide");
                 }
                 else
-                {
+                {   
                     if (verbe == VerbeEnum.Exit && nom == NomEnum.Host)
                     {
                     }
