@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ZProject_TD
 {
     enum VerbeEnum { None, Get, Set, Add, Delete }
-    enum NomEnum { None, Product, Categorie }
+    enum NomEnum { None, Product, Categorie, Commande }
     internal class Program
     {
         static void Main(string[] args)
@@ -18,7 +18,7 @@ namespace ZProject_TD
             var saisie = Console.ReadLine();
             VerbeEnum verbe = VerbeEnum.None;
             NomEnum nom = NomEnum.None; string paramName = null; string paramValue = null;
-            List<Produit> liste = null;
+            List<object> liste = null;
             if (!Extraire(saisie, ref verbe, ref nom, ref paramName, ref paramValue))
             {
                 Console.WriteLine("Instruction non valide");
@@ -31,15 +31,15 @@ namespace ZProject_TD
             Console.ReadLine();
         }
 
-        private static void Afficher(List<Produit> liste)
+        private static void Afficher(List<object> liste)
         {
-            foreach (Produit p in liste)
+            foreach (var p in liste)
             {
                 Console.WriteLine(p);
             }
         }
 
-        private static List<Produit> Requeter(VerbeEnum verbe, NomEnum nom, string paramName, string paramValue)
+        private static List<object> Requeter(VerbeEnum verbe, NomEnum nom, string paramName, string paramValue)
         {
             string requete = null;
             if (verbe == VerbeEnum.Get && nom == NomEnum.Product && paramName == "Categorie")
@@ -58,11 +58,100 @@ namespace ZProject_TD
                 requete = @"select ProductID, Name, ListPrice from Production.Product";
                 return GetProduct(requete);
             }
+            else if (verbe == VerbeEnum.Get && nom == NomEnum.Categorie)
+            {
+                requete = @"select ProductCategoryID, Name from Production.ProductCategory";
+                return GetCategorie(requete);
+            }
+            else if (verbe == VerbeEnum.Get && nom == NomEnum.Commande)
+            {
+                requete = $@"select 
+	                             Year(OrderDate) as Annee, 
+	                            SUM(d.UnitPrice * d.OrderQty) Total
+                            from 
+	                            Sales.SalesOrderHeader h
+	                            inner join Sales.SalesOrderDetail d on d.SalesOrderID = h.SalesOrderID
+                            group by Year(OrderDate)
+                            having Year(OrderDate)={paramValue}
+                            order by Annee desc";
+                return GetCommande(requete, paramValue);
+            }
             return null;
         }
-        private static List<Produit> GetProduct(string requete, string value = null)
+        private static List<object> GetCategorie(string requete)
         {
-            var liste = new List<Produit>(); SqlDataReader rd;
+            var liste = new List<object>(); SqlDataReader rd;
+            // Connexion
+            SqlConnection cnx = new SqlConnection();
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=true";
+            try
+            {
+                cnx.Open();
+            }
+            catch (Exception ex) { return null; }
+            // Requete
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = requete;
+            try
+            {
+                rd = cmd.ExecuteReader();
+            }
+            catch (Exception ex) { return null; }
+
+
+            // Affichage
+            while (rd.Read())
+            {
+                liste.Add(new Categorie
+                {
+                    Id = (int)rd["ProductCategoryID"],
+                    Nom = rd["Name"].ToString(),
+                });
+            }
+            rd.Close();
+            return liste;
+        }
+        private static List<object> GetCommande(string requete, string value = null)
+        {
+            var liste = new List<object>(); SqlDataReader rd;
+            // Connexion
+            SqlConnection cnx = new SqlConnection();
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=true";
+            try
+            {
+                cnx.Open();
+            }
+            catch (Exception ex) { return null; }
+            // Requete
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = requete;
+            try
+            {
+                rd = cmd.ExecuteReader();
+            }
+            catch (Exception ex) { return null; }
+
+
+            // Affichage
+            while (rd.Read())
+            {
+                liste.Add(new Commande
+                {
+                    Annee = (int) rd["Annee"],
+                    Total = (decimal)rd["Total"]
+                });
+            }
+            rd.Close();
+            return liste;
+        }
+
+        private static List<object> GetProduct(string requete, string value = null)
+        {
+            var liste = new List<object>(); SqlDataReader rd;
             // Connexion
             SqlConnection cnx = new SqlConnection();
             cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=true";
