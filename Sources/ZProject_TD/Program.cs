@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace ZProject_TD
 {
+    enum VerbeEnum { None, Get, Set, Add, Delete }
+    enum NomEnum { None, Product }
     internal class Program
     {
         static void Main(string[] args)
         {
-            var saisie = Console.ReadLine(); VerbeEnum verbe = null; string nom = null;
+            var saisie = Console.ReadLine(); VerbeEnum verbe = VerbeEnum.None; NomEnum nom = NomEnum.None;
 
             if (!Extraire(saisie, ref verbe, ref nom))
             {
@@ -19,13 +21,22 @@ namespace ZProject_TD
             }
             else
             {
-                Console.WriteLine("Ok !");
+                Requeter(verbe, nom);
             }
 
             Console.ReadLine();
         }
 
-        private static bool Extraire(string saisie, ref string verbe, ref string nom)
+        private static void Requeter(VerbeEnum verbe, NomEnum nom)
+        {
+
+        }
+        private static void GetProduct()
+        {
+
+        }
+
+        private static bool Extraire(string saisie, ref VerbeEnum verbe, ref NomEnum nom)
         {
             Regex regex = new Regex("([A-Z][a-z0-9]+)-([A-Z][a-z0-9]+)");
 
@@ -36,10 +47,10 @@ namespace ZProject_TD
             foreach (Match match in matches)
             {
                 // Captures
-                verbe = match.Groups[1].Value;
-                nom = match.Groups[2].Value;
+                Enum.TryParse<VerbeEnum>(match.Groups[1].Value, true, out verbe);
+                Enum.TryParse<NomEnum>(match.Groups[2].Value, true, out nom);
             }
-            return ! string.IsNullOrEmpty(verbe);
+            return verbe != VerbeEnum.None && nom != NomEnum.None;
         }
     }
 }
